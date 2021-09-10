@@ -9,9 +9,15 @@ class BaseConfig():
 class DevConfig(BaseConfig):
     FLASK_ENV = 'development'
     DEBUG = True
+    ES_HOST = os.getenv('ES_HOST')
+    ES_USERNAME = os.getenv('ES_USERNAME')
+    ES_PASSWORD = os.getenv('ES_PASSWORD')
 
 class ProductionConfig(BaseConfig):
     FLASK_ENV = 'production'
+    ES_HOST = os.getenv('ES_HOST')
+    ES_USERNAME = os.getenv('ES_USERNAME')
+    ES_PASSWORD = os.getenv('ES_PASSWORD')
 
 class TestConfig(BaseConfig):
     FLASK_ENV = 'development'

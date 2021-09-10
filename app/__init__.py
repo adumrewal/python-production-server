@@ -3,6 +3,10 @@ import config
 from flask import Flask
 import json as jsonlibrary
 
+from app.core import elasticsearch_core as es_core
+import app.routes.sample_route as sample_route
+import app.routes.hero_route as hero_route
+
 def create_app(test_config=None):
     print(f'Starting app in {config.APP_ENV} environment')
 
@@ -14,6 +18,11 @@ def create_app(test_config=None):
         os.makedirs(app.instance_path)
     except OSError:
         pass
+
+    # Initialise service
+    es_core.initialize()
+    sample_route.api.init_app(app=app)
+    hero_route.api.init_app(app=app)
 
     @app.route('/')
     def home_route():
