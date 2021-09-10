@@ -1,5 +1,5 @@
 # Python Production Server
-## Flask ✅, Elasticsearch ✅, ElasticAPM ✅, Docker, Logging ✅, Config files ✅
+## Flask ✅, Elasticsearch ✅, ElasticAPM ✅, Docker ✅, Logging ✅, Config files ✅
 
 ### Dependencies
 - Flask: 2.0.1
@@ -10,6 +10,11 @@
 - blinker: 1.4 (indirect import. `pip install` this incase you face any issues with elasticapm dependencies)
 
 
-To run this raw flask server, run `python run.py`
+To run the raw flask server, run `python run.py`
+
+To run this using docker, run the following commands:
+- `docker-compose build`
+- `docker-compose up`
+This will start running the server on `localhost:5000`
 
 #### Detailed Readme coming soon...
