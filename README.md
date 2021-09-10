@@ -1,5 +1,5 @@
 # Python Production Server
-## Flask, Elsticsearch, ElasticAPM, Docker, Logging, Config files
+## Flask, Elasticsearch, ElasticAPM, Docker, Logging, Config files
 
 ### Dependencies
 - Flask: 2.0.1
