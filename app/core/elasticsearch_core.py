@@ -1,3 +1,4 @@
+import logging
 from elasticsearch import Elasticsearch
 
 _ES: Elasticsearch = None
@@ -15,7 +16,7 @@ def initialize(customConfig=None) -> None:
             import config
         except ImportError:
             config = None
-            print("Elasticsearch config not found")
+            logging.error("Elasticsearch config not found")
             return
         host = config.ES_HOST
         username = config.ES_USERNAME
@@ -28,13 +29,14 @@ def initialize(customConfig=None) -> None:
     )
 
     if _ES.ping():
-        print("Elasticsearch connection successful")
+        logging.info("Elasticsearch connection successful")
     else:
-        print("Elasticsearch connection not established")
+        logging.error("Elasticsearch connection not established")
     
     return
 
 def get_es_client(customConfig=None) -> Elasticsearch:
     if _ES == None:
+        logging.info("Elasticsearch client requested without initialization")
         initialize(customConfig=customConfig)
     return _ES

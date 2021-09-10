@@ -1,4 +1,5 @@
 from pprint import pprint
+import logging
 from elasticsearch.helpers import bulk
 from app.core.elasticsearch_core import get_es_client
 
@@ -10,7 +11,7 @@ def search(index_name, search_query, size=9999):
     if hits>size:
         return search(index_name=index_name, search_query=search_query, size=size*10)
     
-    print("ES Search success, got %d Hits" % hits) if res != None else print("Error: ES Search unsuccessful")
+    logging.info("ES Search success, got %d Hits" % hits) if res != None else logging.info("Error: ES Search unsuccessful")
     res = res['hits']['hits']
     if res != None:
         return res
