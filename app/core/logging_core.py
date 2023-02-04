@@ -15,13 +15,13 @@ def initialize():
 
     log_formatter = APMLogFormatter(
         exclude_fields=[
-            "event", # this causes troubles with logging on apm service
+            # "event", # this might cause troubles with logging on apm service
         ]
     )
     log_handler = logging.StreamHandler()
     log_handler.setFormatter(log_formatter) # you can skip this step if you don't want logs in json format
 
-    logging.basicConfig(level=logging.DEBUG,
+    logging.basicConfig(level=logging.INFO,
                         format='[%(asctime)s]: %(process)s %(levelname)s %(message)s', # gets overridden if log_handler has a custom formatter set
                         datefmt='%Y-%m-%d %H:%M:%S',
                         handlers=[log_handler])
