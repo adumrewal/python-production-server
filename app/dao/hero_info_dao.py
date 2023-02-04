@@ -1,5 +1,5 @@
 import logging
-import app.dao.elasticsearch_service_dao as es_dao
+import app.dao.elasticsearch_dao as es_dao
 
 # the * means this will do a regular expression based search (on all indexes which start with the prefix hero-info-index-)
 HERO_INDEX_NAME = 'hero-info-index-*'
