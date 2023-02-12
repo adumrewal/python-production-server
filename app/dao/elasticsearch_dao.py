@@ -1,8 +1,10 @@
 import logging
 from elasticsearch.helpers import bulk
-from app.core.elasticsearch_core import get_es_client
 
-def search(context={}, index_name=None, body=None, fields=None, size=1e4):
+import app.core.elasticsearch_core as es_core
+from app.middleware.common_context import RequestContext
+
+def search(context: RequestContext, index_name=None, body=None, fields=None, size=1e4):
     """Elasticsearch index search method.
 
     Args:
@@ -19,7 +21,7 @@ def search(context={}, index_name=None, body=None, fields=None, size=1e4):
     Returns:
         list: If result exists returns a list of results, else returns empty list.
     """
-    es_client = get_es_client()
+    es_client = es_core.get_es_client()
     
     result = []
     while True:
@@ -27,7 +29,7 @@ def search(context={}, index_name=None, body=None, fields=None, size=1e4):
             index=index_name,
             body=body,
             _source_includes=fields,
-            size=size)
+            size=int(size))
 
         res = res['hits']['hits'] # get the actual hits
         result.extend(res)
@@ -38,10 +40,10 @@ def search(context={}, index_name=None, body=None, fields=None, size=1e4):
             break
         body['search_after'] = res[-1]['sort']
     
-    logging.info({'message': 'ES search success', 'count_hits': len(result)}, extra=context)
+    logging.info({'function': 'elasticsearch_dao.search', 'message': 'ES search success', 'count_hits': len(result)}, extra=context.logStruct)
     return result
 
-def put_single_doc(context={}, index_name=None, doc={}):
+def put_single_doc(context: RequestContext, index_name=None, doc={}):
     """Elasticsearch index put method.
     
     Args:
@@ -52,15 +54,15 @@ def put_single_doc(context={}, index_name=None, doc={}):
     Returns:
         None: Returns None.
     """
-    _ES = get_es_client()
-    res = _ES.index(index=index_name, body=doc)
+    es_client = es_core.get_es_client()
+    res = es_client.index(index=index_name, body=doc)
     if res!=None:
-        logging.debug({'message': 'ES put_single_doc success', 'res': res}, extra=context)
+        logging.debug({'message': 'ES put_single_doc success', 'res': res}, extra=context.logStruct)
     else:
-        logging.debug({'message': 'Error: ES put_single_doc unsuccessful', 'res': res}, extra=context)
+        logging.debug({'message': 'Error: ES put_single_doc unsuccessful', 'res': res}, extra=context.logStruct)
     return
 
-def put_bulk(context={}, index_name=None, doc_list=[]):
+def put_bulk(context: RequestContext, index_name=None, doc_list=[]):
     """Elasticsearch bulk index put method.
 
     Args:
@@ -71,10 +73,10 @@ def put_bulk(context={}, index_name=None, doc_list=[]):
     Returns:
         None: Returns None.
     """
-    _ES = get_es_client()
-    res = bulk(_ES, doc_list, index=index_name)
+    es_client = es_core.get_es_client()
+    res = bulk(es_client, doc_list, index=index_name)
     if res != None:
-        logging.debug({'message': 'ES put_bulk success', 'res': res}, extra=context)
+        logging.debug({'message': 'ES put_bulk success', 'res': res}, extra=context.logStruct)
     else:
-        logging.debug({'message': 'Error: ES put_bulk unsuccessful', 'res': res}, extra=context)
+        logging.debug({'message': 'Error: ES put_bulk unsuccessful', 'res': res}, extra=context.logStruct)
     return

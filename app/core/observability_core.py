@@ -2,7 +2,7 @@ import config
 import blinker # necessary import for elastic apm to work on docker container
 from elasticapm.contrib.flask import ElasticAPM
 
-_apm: ElasticAPM = None
+_APM: ElasticAPM = None
 
 def initialize(app) -> None:
     app.config['ELASTIC_APM'] = {
@@ -13,4 +13,4 @@ def initialize(app) -> None:
         'ENABLED': config.ELASTIC_APM_ENABLED,
     }
 
-    _apm = ElasticAPM(app)
+    _APM = ElasticAPM(app)

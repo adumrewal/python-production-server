@@ -18,4 +18,4 @@ def as_dict():
    for atr in [f for f in dir(config) if not '__' in f]:
        val = getattr(config, atr)
        res[atr] = val
-   return res 
+   return res

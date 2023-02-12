@@ -25,7 +25,7 @@ def create_app(test_config=None):
         pass
 
     # Initialise service
-    obs_core.initialize(app=app)
+    # obs_core.initialize(app=app)
     es_core.initialize()
     sample_route.api.init_app(app=app)
     hero_route.api.init_app(app=app)
